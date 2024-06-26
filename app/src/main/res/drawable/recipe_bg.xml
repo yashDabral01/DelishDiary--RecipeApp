@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/neutral_primary_grey2"/> <!-- Change this to your desired card background color -->
+            <corners android:topLeftRadius="10dp" android:bottomLeftRadius="10dp" android:topRightRadius="0dp" android:bottomRightRadius="0dp"/>
+        </shape>
+    </item>
+</selector>
