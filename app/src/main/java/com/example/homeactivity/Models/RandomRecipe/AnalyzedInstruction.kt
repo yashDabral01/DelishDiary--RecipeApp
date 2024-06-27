@@ -8,13 +8,13 @@ data class AnalyzedInstruction(
     val steps: List<Step>
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString().toString(),
-        TODO("steps")
-    ) {
-    }
+        name = parcel.readString() ?: "",
+        steps = parcel.createTypedArrayList(Step.CREATOR) ?: emptyList()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
+        parcel.writeTypedList(steps)
     }
 
     override fun describeContents(): Int {

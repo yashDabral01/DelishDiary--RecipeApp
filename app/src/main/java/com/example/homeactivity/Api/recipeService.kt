@@ -10,12 +10,12 @@ interface RecipeService {
     @GET("recipes/random")
     suspend fun getRandomPopularRecipes(
         @Query("number") number: Int = 15,
-        @Query("apiKey") apiKey: String = "e497eb9de4e14237968f46d97f06c1e6"
+        @Query("apiKey") apiKey: String = "fb919adff6094d3aaaa36bbd4eff467f"
     ): Response<RandomRecipiesList>
 
     @GET("recipes/random")
     suspend fun getAllRecipes(
         @Query("number") number: Int = 100,
-        @Query("apiKey") apiKey: String = "e497eb9de4e14237968f46d97f06c1e6"
+        @Query("apiKey") apiKey: String = "fb919adff6094d3aaaa36bbd4eff467f"
     ): Response<RandomRecipiesList>
 }

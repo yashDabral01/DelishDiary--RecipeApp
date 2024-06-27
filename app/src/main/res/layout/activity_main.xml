@@ -67,10 +67,20 @@
                     android:orientation="horizontal"
                     tools:ignore="UselessParent">
                    <SearchView
+                       android:id="@+id/searchView"
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content"
-                       android:background="@drawable/searchbar_bg">
+                       android:iconifiedByDefault="false"
+                       android:focusable="true"
+                       android:focusableInTouchMode="true"
+                       android:background="@drawable/searchbar_bg"
+                       android:queryHint="Search Recipes..">
                    </SearchView>
+                    <ListView
+                        android:id="@+id/search_suggestions_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -119,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:orientation="horizontal">
 
@@ -159,9 +169,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
-
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/recyclerView"
+                    app:layout_constraintTop_toTopOf="@+id/allRecipeView"
                     app:layout_constraintVertical_bias="0.496" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

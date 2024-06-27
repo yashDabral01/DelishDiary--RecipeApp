@@ -2,7 +2,6 @@ package com.example.homeactivity.Models.RandomRecipe
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.util.ArrayList
 
 data class Step(
     val equipment: ArrayList<Equipment>?,
@@ -11,12 +10,11 @@ data class Step(
     val step: String
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.createTypedArrayList(Equipment),
-        parcel.createTypedArrayList(Ingredient),
-        parcel.readInt(),
-        parcel.readString().toString()
-    ) {
-    }
+        equipment = parcel.createTypedArrayList(Equipment.CREATOR),
+        ingredients = parcel.createTypedArrayList(Ingredient.CREATOR),
+        number = parcel.readInt(),
+        step = parcel.readString() ?: ""
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeTypedList(equipment)

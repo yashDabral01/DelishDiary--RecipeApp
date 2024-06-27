@@ -4,4 +4,6 @@
     <string name="discover_tasty_and_healthy_receipt">Discover tasty and healthy receipt</string>
     <string name="hey_user_first_name"><![CDATA[👋 Hey <user first name>]]></string>
     <string name="instruction">Lorem ipsum dolor sit amet consectetur. Sagittis facilisis aliquet aenean lorem ullamcorper et. Risus lectus id sed fermentum in. At porta sed ut lorem volutpat elementum mi sollicitudin. Laoreet tempor nullam velit dui amet mauris sed ac sem.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

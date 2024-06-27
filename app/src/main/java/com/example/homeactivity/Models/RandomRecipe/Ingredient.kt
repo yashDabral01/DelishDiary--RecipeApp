@@ -10,12 +10,11 @@ data class Ingredient(
     val name: String
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString().toString(),
-        parcel.readString().toString(),
-        parcel.readString().toString()
-    ) {
-    }
+        id = parcel.readInt(),
+        image = parcel.readString() ?: "",
+        localizedName = parcel.readString() ?: "",
+        name = parcel.readString() ?: ""
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)

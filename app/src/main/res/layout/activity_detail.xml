@@ -27,118 +27,159 @@
                     android:src="@drawable/foodimg1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
                     tools:ignore="MissingConstraints">
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/favButton"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginEnd="24dp"
+                    android:src="@drawable/baseline_favorite_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/recipeImg"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.091">
                 </ImageView>
             </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="32dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginTop="16dp"
+                android:gravity="center">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView2"
-                        android:layout_width="104dp"
+                        android:layout_width="0dp"
                         android:layout_height="70dp"
+                        android:layout_marginEnd="8dp"
                         app:cardCornerRadius="8dp"
                         android:background="@color/neutral_primary_grey2"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/cardView"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-                        
-                        <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.3">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Ready in "
-                            android:textColor="@color/neutral_primary_grey6"
-                            android:textSize="12sp"
-                            android:textAlignment="center"
-                            android:layout_marginTop="8dp">
-                        </TextView>
-                        <TextView
-                            android:id="@+id/readyIn"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="25 min"
-                            android:textColor="@color/light_red"
-                            android:textAlignment="center"
-                            android:layout_marginTop="24dp"
-                            android:textSize="18sp">
-                        </TextView>
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ready in"
+                                android:textColor="@color/neutral_primary_grey6"
+                                android:textSize="12sp"
+                                android:textAlignment="center"
+                                android:layout_marginTop="8dp"/>
+
+                            <TextView
+                                android:id="@+id/readyIn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="25 min"
+                                android:textColor="@color/light_red"
+                                android:textAlignment="center"
+                                android:layout_marginTop="4dp"
+                                android:textSize="18sp"/>
+                        </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView"
-                        android:layout_width="104dp"
+                        android:layout_width="0dp"
                         android:layout_height="70dp"
+                        android:layout_marginEnd="8dp"
                         app:cardCornerRadius="8dp"
-                        android:layout_marginStart="33dp"
                         android:background="@color/neutral_primary_grey2"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/cardView3"
                         app:layout_constraintStart_toEndOf="@+id/cardView2"
-                        app:layout_constraintTop_toTopOf="parent">
-                        <TextView
-                            android:id="@+id/servingsText"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.3">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Servings "
-                            android:textColor="@color/neutral_primary_grey6"
-                            android:textSize="12sp"
-                            android:textAlignment="center"
-                            android:layout_marginTop="8dp">
-                        </TextView>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="6"
-                            android:textColor="@color/light_red"
-                            android:textAlignment="center"
-                            android:layout_marginTop="24dp"
-                            android:textSize="18sp">
-                        </TextView>
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Servings"
+                                android:textColor="@color/neutral_primary_grey6"
+                                android:textSize="12sp"
+                                android:textAlignment="center"
+                                android:layout_marginTop="8dp"/>
+
+                            <TextView
+                                android:id="@+id/servingsText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="6"
+                                android:textColor="@color/light_red"
+                                android:textAlignment="center"
+                                android:layout_marginTop="4dp"
+                                android:textSize="18sp"/>
+                        </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView3"
-                        android:layout_width="104dp"
+                        android:layout_width="0dp"
                         android:layout_height="70dp"
-                        android:layout_marginStart="34dp"
                         app:cardCornerRadius="8dp"
                         android:background="@color/neutral_primary_grey2"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/cardView"
-                        app:layout_constraintTop_toTopOf="parent">
-                        <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.3">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Price/Serving"
-                            android:textColor="@color/neutral_primary_grey6"
-                            android:textSize="12sp"
-                            android:textAlignment="center"
-                            android:layout_marginTop="8dp">
-                        </TextView>
-                        <TextView
-                            android:id="@+id/pricePerServingText"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="156"
-                            android:textColor="@color/light_red"
-                            android:textAlignment="center"
-                            android:layout_marginTop="24dp"
-                            android:textSize="18sp">
-                        </TextView>
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Price/Serving"
+                                android:textColor="@color/neutral_primary_grey6"
+                                android:textSize="12sp"
+                                android:textAlignment="center"
+                                android:layout_marginTop="8dp"/>
+
+                            <TextView
+                                android:id="@+id/pricePerServingText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="156"
+                                android:textColor="@color/light_red"
+                                android:textAlignment="center"
+                                android:layout_marginTop="4dp"
+                                android:textSize="18sp"/>
+                        </LinearLayout>
                     </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -181,8 +222,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp">
+                android:layout_marginEnd="16dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -251,8 +291,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp">
+                android:layout_marginEnd="16dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

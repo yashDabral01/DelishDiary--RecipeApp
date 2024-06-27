@@ -2,13 +2,12 @@ package com.example.homeactivity.Models.RandomRecipe
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.util.ArrayList
 
 data class RecipeX(
     val aggregateLikes: Int,
     val analyzedInstructions: List<AnalyzedInstruction>,
     val cheap: Boolean,
-    val cookingMinutes: Any,
+    val cookingMinutes: Any?,
     val creditsText: String,
     val cuisines: ArrayList<String>?,
     val dairyFree: Boolean,
@@ -24,8 +23,8 @@ data class RecipeX(
     val license: String,
     val lowFodmap: Boolean,
     val occasions: ArrayList<String>?,
-    val originalId: Any,
-    val preparationMinutes: Any,
+    val originalId: Any?,
+    val preparationMinutes: Any?,
     val pricePerServing: Double,
     val readyInMinutes: Int,
     val servings: Int,
@@ -43,48 +42,49 @@ data class RecipeX(
     val weightWatcherSmartPoints: Int
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        TODO("analyzedInstructions"),
-        parcel.readByte() != 0.toByte(),
-        TODO("cookingMinutes"),
-        parcel.readString().toString(),
-        parcel.createStringArrayList(),
-        parcel.readByte() != 0.toByte(),
-        parcel.createStringArrayList(),
-        parcel.createStringArrayList(),
-        parcel.readString().toString(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readString().toString(),
-        parcel.readString().toString(),
-        parcel.readString().toString(),
-        parcel.readString().toString(),
-        parcel.readByte() != 0.toByte(),
-        parcel.createStringArrayList(),
-        TODO("originalId"),
-        TODO("preparationMinutes"),
-        parcel.readDouble(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readString().toString(),
-        parcel.readString().toString(),
-        parcel.readDouble(),
-        parcel.readString().toString(),
-        parcel.readString().toString(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readString().toString(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readInt()
-    ) {
-    }
+        aggregateLikes = parcel.readInt(),
+        analyzedInstructions = parcel.createTypedArrayList(AnalyzedInstruction.CREATOR) ?: emptyList(),
+        cheap = parcel.readByte() != 0.toByte(),
+        cookingMinutes = parcel.readValue(Any::class.java.classLoader),
+        creditsText = parcel.readString() ?: "",
+        cuisines = parcel.createStringArrayList(),
+        dairyFree = parcel.readByte() != 0.toByte(),
+        diets = parcel.createStringArrayList(),
+        dishTypes = parcel.createStringArrayList(),
+        gaps = parcel.readString() ?: "",
+        glutenFree = parcel.readByte() != 0.toByte(),
+        healthScore = parcel.readInt(),
+        id = parcel.readInt(),
+        image = parcel.readString() ?: "",
+        imageType = parcel.readString() ?: "",
+        instructions = parcel.readString() ?: "",
+        license = parcel.readString() ?: "",
+        lowFodmap = parcel.readByte() != 0.toByte(),
+        occasions = parcel.createStringArrayList(),
+        originalId = parcel.readValue(Any::class.java.classLoader),
+        preparationMinutes = parcel.readValue(Any::class.java.classLoader),
+        pricePerServing = parcel.readDouble(),
+        readyInMinutes = parcel.readInt(),
+        servings = parcel.readInt(),
+        sourceName = parcel.readString() ?: "",
+        sourceUrl = parcel.readString() ?: "",
+        spoonacularScore = parcel.readDouble(),
+        spoonacularSourceUrl = parcel.readString() ?: "",
+        summary = parcel.readString() ?: "",
+        sustainable = parcel.readByte() != 0.toByte(),
+        title = parcel.readString() ?: "",
+        vegan = parcel.readByte() != 0.toByte(),
+        vegetarian = parcel.readByte() != 0.toByte(),
+        veryHealthy = parcel.readByte() != 0.toByte(),
+        veryPopular = parcel.readByte() != 0.toByte(),
+        weightWatcherSmartPoints = parcel.readInt()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(aggregateLikes)
+        parcel.writeTypedList(analyzedInstructions)
         parcel.writeByte(if (cheap) 1 else 0)
+        parcel.writeValue(cookingMinutes)
         parcel.writeString(creditsText)
         parcel.writeStringList(cuisines)
         parcel.writeByte(if (dairyFree) 1 else 0)
@@ -100,6 +100,8 @@ data class RecipeX(
         parcel.writeString(license)
         parcel.writeByte(if (lowFodmap) 1 else 0)
         parcel.writeStringList(occasions)
+        parcel.writeValue(originalId)
+        parcel.writeValue(preparationMinutes)
         parcel.writeDouble(pricePerServing)
         parcel.writeInt(readyInMinutes)
         parcel.writeInt(servings)
