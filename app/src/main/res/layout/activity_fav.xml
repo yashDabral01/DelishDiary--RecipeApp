@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".Activities.FavActivity">
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,8 +29,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="837dp"
-            android:layout_margin="10dp">
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/favView"
                 android:layout_width="match_parent"

@@ -11,7 +11,7 @@
     tools:ignore="MissingConstraints"
     android:background="@drawable/recipe_bg"
     android:elevation="8dp"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="10dp"
     app:cardBackgroundColor="@color/neutaral_primary_grey"
     app:cardUseCompatPadding="true">
 

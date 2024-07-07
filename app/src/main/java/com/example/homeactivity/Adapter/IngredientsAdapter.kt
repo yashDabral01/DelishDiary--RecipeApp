@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
-import com.example.homeactivity.Models.RandomRecipe.Ingredient
+import com.example.homeactivity.Model.Ingredient
 import com.example.homeactivity.databinding.IngredientsViewholderBinding
-import com.example.homeactivity.databinding.PopularViewholderBinding
 
 class IngredientsAdapter(private val ingredientsList: ArrayList<Ingredient>) : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>(){
     class ViewHolder(val binding: IngredientsViewholderBinding):RecyclerView.ViewHolder(binding.root)

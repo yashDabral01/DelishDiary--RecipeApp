@@ -1,43 +1,66 @@
 package com.example.homeactivity.Activities
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.homeactivity.Adapter.AllRecipeAdapter
 import com.example.homeactivity.Adapter.EquipmentsAdapter
 import com.example.homeactivity.Adapter.IngredientsAdapter
-import com.example.homeactivity.Models.RandomRecipe.Equipment
-import com.example.homeactivity.Models.RandomRecipe.Ingredient
-import com.example.homeactivity.Models.RandomRecipe.RandomRecipiesList
-import com.example.homeactivity.Models.RandomRecipe.RecipeX
+import com.example.homeactivity.Database.RecipeApplication
+import com.example.homeactivity.Model.Equipment
+import com.example.homeactivity.Model.Ingredient
+import com.example.homeactivity.Model.Recipe
+import com.example.homeactivity.Model.RecipeX
 import com.example.homeactivity.R
+import com.example.homeactivity.ViewModel.MainViewModel
 import com.example.homeactivity.databinding.ActivityDetailBinding
-import com.example.homeactivity.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private lateinit var item : RecipeX
+    private lateinit var Favitem : Recipe
+    lateinit var mainViewModel : MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         modifyStatusBar()
-        initDetails()
-        initIngredients()
-        initEquipments()
-        binding.favButton.setOnClickListener{
-             // on click cache the
+
+        // handling the case when different object can come from different classes
+        val source = intent.getStringExtra("source")
+        when (source) {
+            "FavAdapter" -> {
+                initFavDetails()
+                initEquipmentsForFavList()
+                initIngredientsForFavList()
+            }
+            else -> {
+                initDetails()
+                initIngredients()
+                initEquipments()
+
+                // on click favbutton item is added to database as favourite item
+                binding.favButton.setOnClickListener {
+                    val scope = CoroutineScope(Dispatchers.Main)
+                    scope.launch {
+                        // Call your suspend function here
+                        initFavButton()
+                    }
+                }
+            }
         }
     }
     private fun initDetails(){
@@ -55,6 +78,20 @@ class DetailActivity : AppCompatActivity() {
             .apply(requestOptions)
             .into(binding.recipeImg)
 
+    }
+    private fun initFavDetails(){
+        Favitem = intent.getParcelableExtra("object")!!
+        binding.readyIn.text = Favitem.readyInMinutes.toString()
+        binding.servingsText.text = Favitem.servings.toString()
+        binding.pricePerServingText.text = Favitem.pricePerServing.toString()
+        binding.instructionsText.text = Favitem.instructions
+        binding.QuickSummaryText.text = Favitem.summary
+
+        val requestOptions = RequestOptions().placeholder(R.drawable.foodimg1)
+        Glide.with(this)
+            .load(Favitem.image)
+            .apply(requestOptions)
+            .into(binding.recipeImg)
     }
     private fun initIngredients(){
         val ingredientsList : ArrayList<Ingredient> = generateArrayOfIngredients()
@@ -90,6 +127,27 @@ class DetailActivity : AppCompatActivity() {
         }
         return equipmentsList
     }
+
+    private suspend fun initFavButton(){
+        item = intent.getParcelableExtra("object")!!
+        val recipe = Recipe(
+            id = item.id, image = item.image,
+            readyInMinutes = item.readyInMinutes,
+            servings = item.servings,
+            title = item.title,
+            summary = item.summary,
+            instructions = item.instructions,
+            pricePerServing = item.pricePerServing,
+            equipment = generateArrayOfEquipments(),
+            ingredients = generateArrayOfIngredients() )
+
+        val repository = (application as RecipeApplication).recipeRepository
+        repository.addRecipe(recipe)
+        // Update UI on the main thread
+        withContext(Dispatchers.Main) {
+            Toast.makeText(this@DetailActivity, "Recipe is added to favourite", Toast.LENGTH_SHORT).show()
+        }
+    }
     private fun modifyStatusBar() {
         // Change status bar color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -100,5 +158,19 @@ class DetailActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
+    }
+    private fun initIngredientsForFavList(){
+        Favitem = intent.getParcelableExtra("object")!!
+        val ingredientsList : ArrayList<Ingredient> = Favitem.ingredients
+        binding.viewIngredients.layoutManager = LinearLayoutManager(this,
+            LinearLayoutManager.HORIZONTAL,false)
+        binding.viewIngredients.adapter = IngredientsAdapter(ingredientsList)
+    }
+    private fun initEquipmentsForFavList(){
+        Favitem = intent.getParcelableExtra("object")!!
+        val equipmentList : ArrayList<Equipment>? = Favitem.equipment
+        binding.viewEquipments.layoutManager = LinearLayoutManager(this,
+            LinearLayoutManager.HORIZONTAL,false)
+        binding.viewEquipments.adapter = equipmentList?.let { EquipmentsAdapter(it) }
     }
 }
