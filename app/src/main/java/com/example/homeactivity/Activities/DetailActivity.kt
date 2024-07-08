@@ -37,7 +37,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        modifyStatusBar()
+      //  modifyStatusBar()
 
         // handling the case when different object can come from different classes
         val source = intent.getStringExtra("source")
@@ -69,8 +69,8 @@ class DetailActivity : AppCompatActivity() {
         binding.readyIn.text = item.readyInMinutes.toString()
         binding.servingsText.text = item.servings.toString()
         binding.pricePerServingText.text = item.pricePerServing.toString()
-        binding.instructionsText.text = item.instructions
-        binding.QuickSummaryText.text = item.summary
+        binding.instructionsText.text = item.instructions.stripHtmlTags()
+        binding.QuickSummaryText.text = item.summary.stripHtmlTags()
 
         val requestOptions = RequestOptions().placeholder(R.drawable.foodimg1)
         Glide.with(this)
@@ -79,13 +79,15 @@ class DetailActivity : AppCompatActivity() {
             .into(binding.recipeImg)
 
     }
+
+    // This function is made for the purpose that it is called if the data is coming from FavRecipeAdapter
     private fun initFavDetails(){
         Favitem = intent.getParcelableExtra("object")!!
         binding.readyIn.text = Favitem.readyInMinutes.toString()
         binding.servingsText.text = Favitem.servings.toString()
         binding.pricePerServingText.text = Favitem.pricePerServing.toString()
-        binding.instructionsText.text = Favitem.instructions
-        binding.QuickSummaryText.text = Favitem.summary
+        binding.instructionsText.text = Favitem.instructions.stripHtmlTags()
+        binding.QuickSummaryText.text = Favitem.summary.stripHtmlTags()
 
         val requestOptions = RequestOptions().placeholder(R.drawable.foodimg1)
         Glide.with(this)
@@ -172,5 +174,10 @@ class DetailActivity : AppCompatActivity() {
         binding.viewEquipments.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.HORIZONTAL,false)
         binding.viewEquipments.adapter = equipmentList?.let { EquipmentsAdapter(it) }
+    }
+
+    // function to remove html tags from the response
+    fun String.stripHtmlTags(): String {
+        return this.replace(Regex("<.*?>"), "")
     }
 }

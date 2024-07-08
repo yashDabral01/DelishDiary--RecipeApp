@@ -12,14 +12,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homeactivity.Adapter.AllRecipeAdapter
 import com.example.homeactivity.Adapter.SuggestionAdapter
-import com.example.homeactivity.Api.RecipeService
-import com.example.homeactivity.Api.RetrofitHelper
 import com.example.homeactivity.Database.RecipeApplication
-import com.example.homeactivity.MarginItemDecoration
 import com.example.homeactivity.Model.RandomRecipiesList
 import com.example.homeactivity.Model.RecipeX
 import com.example.homeactivity.R
-import com.example.homeactivity.Repository.recipeRepository
+import com.example.homeactivity.Repository.Response
 import com.example.homeactivity.ViewModel.MainViewModel
 import com.example.homeactivity.ViewModel.MainViewModelFactory
 import com.example.homeactivity.databinding.ActivitySearchBinding
@@ -34,7 +31,11 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initList()
+
+        val repository = (application as RecipeApplication).recipeRepository
+        mainViewModel = ViewModelProvider(this, MainViewModelFactory(repository))[MainViewModel::class.java]
+
+       initList()
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             OnQueryTextListener {
@@ -75,9 +76,7 @@ class SearchActivity : AppCompatActivity() {
        }
     }
     private fun initList() {
-        val repository = (application as RecipeApplication).recipeRepository
-        mainViewModel =
-            ViewModelProvider(this, MainViewModelFactory(repository))[MainViewModel::class.java]
+
         mainViewModel.allRecipies.observe(this) {
             binding.searchResultsList.layoutManager = LinearLayoutManager(
                 this,
@@ -96,15 +95,11 @@ class SearchActivity : AppCompatActivity() {
                     )
                 )
             }
-            // adding margin to recyler view items
-            binding.searchResultsList.addItemDecoration(
-                   MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin))
-                )
             initSuggestionList(it)
         }
     }
-    private fun initSuggestionList(randomRecipiesList: RandomRecipiesList){
-       filterSuggestionList.addAll(randomRecipiesList.recipes)
+    private fun initSuggestionList(randomRecipiesList: Response<RandomRecipiesList>){
+       filterSuggestionList.addAll(randomRecipiesList.data!!.recipes)
     }
     private fun modifyStatusBar() {
         // Change status bar color

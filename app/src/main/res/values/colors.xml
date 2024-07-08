@@ -9,5 +9,5 @@
     <color name="neutral_primary_grey6">#606F89</color>
     <color name="light_red">#E54900</color>
     <color name="primary_grey10">#171B21</color>
-    <color name="background">#dddddd</color>
+    <color name="shimmer_placeholder">#dddddd</color>
 </resources>

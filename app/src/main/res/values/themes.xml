@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.HomeActivity" parent="Base.Theme.HomeActivity" />
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/neutaral_primary_grey</item>
+    </style>
 </resources>

@@ -11,25 +11,31 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homeactivity.Adapter.AllRecipeAdapter
 import com.example.homeactivity.Adapter.PopularAdapter
-import com.example.homeactivity.Api.RecipeService
-import com.example.homeactivity.Api.RetrofitHelper
 import com.example.homeactivity.Database.RecipeApplication
-import com.example.homeactivity.MarginItemDecoration
 import com.example.homeactivity.Network.NetworkUtils
 import com.example.homeactivity.R
-import com.example.homeactivity.Repository.recipeRepository
+import com.example.homeactivity.Repository.Response
 import com.example.homeactivity.ViewModel.MainViewModel
 import com.example.homeactivity.ViewModel.MainViewModelFactory
 import com.example.homeactivity.databinding.ActivityMainBinding
+import com.facebook.shimmer.ShimmerFrameLayout
 
 class MainActivity : AppCompatActivity() {
     lateinit var mainViewModel : MainViewModel
     private lateinit var binding: ActivityMainBinding
+    private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize ViewModel only once
+        val repository = (application as RecipeApplication).recipeRepository
+        mainViewModel = ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
+
+        // Initialize the ShimmerFrameLayout
+        shimmerFrameLayout = binding.shimmerViewContainer
 
         //check for network connection
         if (NetworkUtils.isInternetAvailable(this)) {
@@ -48,31 +54,65 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initPopular() {
-        val repository = (application as RecipeApplication).recipeRepository
-         mainViewModel = ViewModelProvider(this,MainViewModelFactory(repository))[MainViewModel::class.java]
+
+
          mainViewModel.randomRecipies.observe(this) {
-            binding.viewPopular.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-            binding.viewPopular.adapter = PopularAdapter(it)
+             when(it){
+                 is Response.Loading -> {
+                     // Show shimmer effect while data is loading
+                     shimmerFrameLayout.startShimmer()
+                     binding.viewPopular.visibility = View.GONE
+                     shimmerFrameLayout.visibility = View.VISIBLE
+                 }
+                 is Response.Success -> {
+                     binding.viewPopular.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+                     binding.viewPopular.adapter = PopularAdapter(it)
+                     // Hide shimmer effect and show data
+                     shimmerFrameLayout.stopShimmer()
+                     shimmerFrameLayout.visibility = View.GONE
+                     binding.viewPopular.visibility = View.VISIBLE
+                 }
+                 is Response.Error -> {
+                     Toast.makeText(this, "Some error occurred!!", Toast.LENGTH_SHORT).show()
+                 }
+             }
 
         }
 
     }
     private fun initAllRecipes(){
-        val repository = (application as RecipeApplication).recipeRepository
-        mainViewModel = ViewModelProvider(this,MainViewModelFactory(repository))[MainViewModel::class.java]
+
         mainViewModel.allRecipies.observe(this) {
-            binding.allRecipeView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-            binding.allRecipeView.adapter = AllRecipeAdapter(it)
-            // adding divider to recycler view items
-            binding.allRecipeView.apply {
-                setHasFixedSize(true)
-                adapter = binding.allRecipeView.adapter
-                layoutManager = binding.allRecipeView.layoutManager
-                addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
-                // adding margin to recycler view items
-                 binding.allRecipeView.addItemDecoration(
-                   MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin))
-                )
+
+            when(it){
+                is Response.Loading -> {
+                    // Show shimmer effect while data is loading
+                    shimmerFrameLayout.startShimmer()
+                    binding.allRecipeView.visibility = View.GONE
+                    shimmerFrameLayout.visibility = View.VISIBLE
+                }
+                is Response.Success ->{
+                    binding.allRecipeView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+                    binding.allRecipeView.adapter = AllRecipeAdapter(it)
+
+                    // Hide shimmer effect and show data
+                    shimmerFrameLayout.stopShimmer()
+                    shimmerFrameLayout.visibility = View.GONE
+                    binding.allRecipeView.visibility = View.VISIBLE
+
+
+                    // adding divider to recycler view items
+                    binding.allRecipeView.apply {
+                        setHasFixedSize(true)
+                        adapter = binding.allRecipeView.adapter
+                        layoutManager = binding.allRecipeView.layoutManager
+                        addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
+
+                    }
+                }
+                is Response.Error ->{
+                    Toast.makeText(this, "Some error occurred!!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -92,14 +132,6 @@ class MainActivity : AppCompatActivity() {
     private fun initBottomNav() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home-> {
-                    // Handle navigation to the Home screen
-                    Toast.makeText(this, "Home selected", Toast.LENGTH_SHORT).show()
-                    // Replace the current fragment/activity
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
                 R.id.favourite -> {
                     // Handle navigation to the Favourite screen
                     Toast.makeText(this, "Search selected", Toast.LENGTH_SHORT).show()
@@ -108,7 +140,6 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-
                 else -> {false}
             }
         }

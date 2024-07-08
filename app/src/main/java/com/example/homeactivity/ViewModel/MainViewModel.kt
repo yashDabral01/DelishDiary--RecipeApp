@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homeactivity.Model.RandomRecipiesList
 import com.example.homeactivity.Model.Recipe
+import com.example.homeactivity.Repository.Response
 import com.example.homeactivity.Repository.recipeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,8 +13,8 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val recipeRepository: recipeRepository) : ViewModel() {
 
-     lateinit var randomRecipies : LiveData<RandomRecipiesList>
-     lateinit var allRecipies : LiveData<RandomRecipiesList>
+     lateinit var randomRecipies : LiveData<Response<RandomRecipiesList>>
+     lateinit var allRecipies : LiveData<Response<RandomRecipiesList>>
      lateinit var allFavRecipes : LiveData<List<Recipe>>
     init{
         viewModelScope.launch (Dispatchers.IO) {

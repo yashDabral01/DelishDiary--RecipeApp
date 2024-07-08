@@ -30,6 +30,10 @@ class FavActivity : AppCompatActivity() {
         setContentView(binding.root)
         initFavRecipes()
         modifyStatusBar()
+
+        binding.backButton.setOnClickListener{
+            finish();
+        }
     }
 
     private fun initFavRecipes(){
@@ -39,16 +43,14 @@ class FavActivity : AppCompatActivity() {
             binding.favView.layoutManager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL,false)
             binding.favView.adapter = FavRecipeAdapter(it,repository)
+
             // adding divider to recycler view items
             binding.favView.apply {
                 setHasFixedSize(true)
                 adapter = binding.favView.adapter
                 layoutManager = binding.favView.layoutManager
                 addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
-                // adding margin to recycler view items
-                binding.favView.addItemDecoration(
-                    MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin))
-                )
+
             }
         }
     }

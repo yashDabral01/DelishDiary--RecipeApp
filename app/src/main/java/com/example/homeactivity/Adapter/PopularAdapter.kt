@@ -11,9 +11,10 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
 import com.example.homeactivity.Activities.DetailActivity
 import com.example.homeactivity.Model.RandomRecipiesList
+import com.example.homeactivity.Repository.Response
 import com.example.homeactivity.databinding.PopularViewholderBinding
 
-class PopularAdapter(val items : RandomRecipiesList) : RecyclerView.Adapter<PopularAdapter.ViewHolder>() {
+class PopularAdapter(val items: Response<RandomRecipiesList>) : RecyclerView.Adapter<PopularAdapter.ViewHolder>() {
     private var context: Context? = null
 
     class ViewHolder(val binding: PopularViewholderBinding) : RecyclerView.ViewHolder(binding.root)
@@ -24,21 +25,21 @@ class PopularAdapter(val items : RandomRecipiesList) : RecyclerView.Adapter<Popu
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = items.recipes.size
+    override fun getItemCount(): Int = items.data!!.recipes.size
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PopularAdapter.ViewHolder, position: Int) {
-        holder.binding.recipeName.text = items.recipes[position].title.toString()
-        holder.binding.readyIn.text = "Ready in ${items.recipes[position].readyInMinutes.toString()} mins"
+        holder.binding.recipeName.text = items.data!!.recipes[position].title.toString()
+        holder.binding.readyIn.text = "Ready in ${items.data.recipes[position].readyInMinutes.toString()} mins"
 
         val requestOptions = RequestOptions().transform(CenterCrop())
         Glide.with(holder.itemView.context)
-            .load(items.recipes[position].image)
+            .load(items.data.recipes[position].image)
             .apply(requestOptions)
             .into(holder.binding.randomRecipeImg)
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailActivity::class.java)
-            intent.putExtra("object",items.recipes[position])
+            intent.putExtra("object",items.data.recipes[position])
             intent.putExtra("source","PopularAdapter")
             holder.itemView.context.startActivity(intent)
         }
