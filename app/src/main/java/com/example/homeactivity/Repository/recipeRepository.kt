@@ -26,6 +26,8 @@ class recipeRepository(private val recipeService:RecipeService, private val reci
             val result = recipeService.getRandomPopularRecipes()
             if (result.body() != null) {
                 randomRecipesLiveData.postValue(Response.Success(result.body()))
+            }else{
+                randomRecipesLiveData.postValue(Response.Error("API error!!"))
             }
         }catch (e:Exception){
             randomRecipesLiveData.postValue(Response.Error(e.message.toString()))
@@ -37,6 +39,8 @@ class recipeRepository(private val recipeService:RecipeService, private val reci
             val result = recipeService.getAllRecipes()
             if (result.body() != null) {
                 allRecipesLiveData.postValue(Response.Success(result.body()))
+            }else{
+                allRecipesLiveData.postValue(Response.Error("API error!!"))
             }
         }catch (e:Exception){
             allRecipesLiveData.postValue(Response.Error(e.message.toString()))

@@ -51,16 +51,38 @@ class DetailActivity : AppCompatActivity() {
                 initDetails()
                 initIngredients()
                 initEquipments()
-
+                binding.favButton.visibility = View.VISIBLE
                 // on click favbutton item is added to database as favourite item
                 binding.favButton.setOnClickListener {
-                    val scope = CoroutineScope(Dispatchers.Main)
-                    scope.launch {
-                        // Call your suspend function here
-                        initFavButton()
+                    if (binding.favButton.tag == "not_favorited") {
+                        binding.favButton.setImageResource(R.drawable.baseline_favorite_24)
+                        binding.favButton.tag = "favorited"
+                        val scope = CoroutineScope(Dispatchers.Main)
+                        scope.launch {
+                            // Call your suspend function here
+                            initFavButton()
+                        }
+                    } else {
+
+                        binding.favButton.setImageResource(R.drawable.baseline_favorite_border_24)
+                        binding.favButton.tag = "not_favorited"
+                        val scope = CoroutineScope(Dispatchers.Main)
+                        scope.launch {
+                            // Call your suspend function here
+                             deleteRecipe()
+                        }
                     }
                 }
             }
+        }
+    }
+
+    private suspend fun deleteRecipe(){
+        item = intent.getParcelableExtra("object")!!
+        val repository = (application as RecipeApplication).recipeRepository
+        repository.deleteRecipe(item.id)
+        withContext(Dispatchers.Main) {
+            Toast.makeText(this@DetailActivity, "Recipe is removed from favourite", Toast.LENGTH_SHORT).show()
         }
     }
     private fun initDetails(){
@@ -82,6 +104,7 @@ class DetailActivity : AppCompatActivity() {
 
     // This function is made for the purpose that it is called if the data is coming from FavRecipeAdapter
     private fun initFavDetails(){
+        binding.favButton.setImageResource(R.drawable.baseline_favorite_24)
         Favitem = intent.getParcelableExtra("object")!!
         binding.readyIn.text = Favitem.readyInMinutes.toString()
         binding.servingsText.text = Favitem.servings.toString()

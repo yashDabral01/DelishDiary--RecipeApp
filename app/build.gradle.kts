@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id ("kotlin-kapt")
     id ("kotlin-parcelize")
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -82,6 +83,10 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
 
+    // For shimmer effect
     implementation ("com.facebook.shimmer:shimmer:0.5.0")
-
+    // For Firebase
+    implementation("com.google.firebase:firebase-auth:23.0.0")
+    // For splash Screen
+    implementation("androidx.core:core-splashscreen:1.2.0-alpha01")
 }

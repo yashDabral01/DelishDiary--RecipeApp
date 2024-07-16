@@ -35,7 +35,7 @@ class SearchActivity : AppCompatActivity() {
         val repository = (application as RecipeApplication).recipeRepository
         mainViewModel = ViewModelProvider(this, MainViewModelFactory(repository))[MainViewModel::class.java]
 
-       initList()
+        initList()
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             OnQueryTextListener {

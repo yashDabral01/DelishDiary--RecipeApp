@@ -2,7 +2,9 @@ package com.example.homeactivity.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,6 +21,7 @@ import com.example.homeactivity.ViewModel.MainViewModel
 import com.example.homeactivity.ViewModel.MainViewModelFactory
 import com.example.homeactivity.databinding.ActivityMainBinding
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     lateinit var mainViewModel : MainViewModel
@@ -30,6 +33,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val email = intent.getStringExtra("user_email")
+        email?.let {
+            val name = extractNameFromEmail(it)
+            binding.userNameText.text = name
+//            userEmailTextView.text = it
+        }
         // Initialize ViewModel only once
         val repository = (application as RecipeApplication).recipeRepository
         mainViewModel = ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
@@ -42,15 +51,19 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "You are online", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "No internet connection. Showing offline data.", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(this, FavActivity::class.java)
-//            startActivity(intent)
+            val intent = Intent(this, FavActivity::class.java)
+            startActivity(intent)
+            finish()
         }
+
         // Initialization for views
         modifyStatusBar()
         initPopular()
         initAllRecipes()
         initSearch()
+        initlogout()
         initBottomNav()
+
     }
 
     private fun initPopular() {
@@ -142,6 +155,25 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> {false}
             }
+        }
+    }
+    private fun extractNameFromEmail(email: String): String {
+        val namePart = email.substringBefore("@")
+        return namePart.replace(".", " ").capitalizeWords()
+    }
+
+    private fun String.capitalizeWords(): String = split(" ").joinToString(" ") { it.capitalize() }
+    private fun initlogout(){
+        binding.logoutIcon.setOnClickListener{
+            binding.logoutIcon.setOnClickListener {
+                FirebaseAuth.getInstance().signOut()
+                // Navigate the user to the login screen
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish() // Finish the current activity so the user cannot go back to it
+            }
+
         }
     }
 }
