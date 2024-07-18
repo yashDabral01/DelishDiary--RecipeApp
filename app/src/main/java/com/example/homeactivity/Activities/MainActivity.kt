@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -67,8 +66,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initPopular() {
-
-
          mainViewModel.randomRecipies.observe(this) {
              when(it){
                  is Response.Loading -> {
@@ -84,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                      shimmerFrameLayout.stopShimmer()
                      shimmerFrameLayout.visibility = View.GONE
                      binding.viewPopular.visibility = View.VISIBLE
+                     binding.popularRecipesContainer.visibility = View.VISIBLE
                  }
                  is Response.Error -> {
                      Toast.makeText(this, "Some error occurred!!", Toast.LENGTH_SHORT).show()
@@ -112,7 +110,9 @@ class MainActivity : AppCompatActivity() {
                     shimmerFrameLayout.stopShimmer()
                     shimmerFrameLayout.visibility = View.GONE
                     binding.allRecipeView.visibility = View.VISIBLE
-
+                    binding.allRecipesContainer.visibility = View.VISIBLE
+                    binding.serachViewContainer.visibility = View.VISIBLE
+                    binding.greetingsContainer.visibility = View.VISIBLE
 
                     // adding divider to recycler view items
                     binding.allRecipeView.apply {

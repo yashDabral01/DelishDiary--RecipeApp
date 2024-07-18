@@ -2,24 +2,17 @@ package com.example.homeactivity.Activities
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.homeactivity.Adapter.AllRecipeAdapter
 import com.example.homeactivity.Adapter.FavRecipeAdapter
 import com.example.homeactivity.Database.RecipeApplication
-import com.example.homeactivity.MarginItemDecoration
 import com.example.homeactivity.R
 import com.example.homeactivity.ViewModel.MainViewModel
 import com.example.homeactivity.ViewModel.MainViewModelFactory
 import com.example.homeactivity.databinding.ActivityFavBinding
-import com.example.homeactivity.databinding.ActivityMainBinding
-import com.example.homeactivity.databinding.FavrecipeViewholderBinding
 
 class FavActivity : AppCompatActivity() {
     lateinit var mainViewModel : MainViewModel

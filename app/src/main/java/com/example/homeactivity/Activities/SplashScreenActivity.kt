@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
-    private val splashScreenDuration: Long = 2000 // 2 seconds
+    private val splashScreenDuration: Long = 1000 // 1 seconds
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
